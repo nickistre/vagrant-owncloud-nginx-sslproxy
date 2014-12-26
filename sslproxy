@@ -1,0 +1,53 @@
+# You may add here your
+# server {
+#	...
+# }
+# statements for each of your virtual hosts to this file
+
+##
+# You should look at the following URL's in order to grasp a solid understanding
+# of Nginx configuration files in order to fully unleash the power of Nginx.
+# http://wiki.nginx.org/Pitfalls
+# http://wiki.nginx.org/QuickStart
+# http://wiki.nginx.org/Configuration
+#
+# Generally, you will want to move this file somewhere, and start with a clean
+# file but keep this around for reference. Or just disable in sites-enabled.
+#
+# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
+##
+
+server {
+  listen 80;
+  return 301 https://$host$request_uri;
+}
+
+server {
+  listen 443;
+  server_name owncloudssl.vagrant.dev;
+  
+  ssl_certificate       /opt/ssl/owncloudssl.vagrant.dev.crt;
+  ssl_certificate_key   /opt/ssl/owncloudssl.vagrant.dev.key;
+  
+  ssl on; 
+  ssl_session_cache  builtin:1000  shared:SSL:10m;
+  ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
+  ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;
+  ssl_prefer_server_ciphers on;
+
+  access_log            /var/log/nginx/owncloud.access.log;
+
+  location / {
+
+    proxy_set_header        Host $host;
+    proxy_set_header        X-Real-IP $remote_addr;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header        X-Forwarded-Proto $scheme;
+
+    # Fix the “It appears that your reverse proxy set up is broken" error.
+    proxy_pass          http://owncloud.vagrant.dev:80;
+    proxy_read_timeout  90;
+
+    proxy_redirect      http://owncloud.vagrant.dev:80 https://owncloudssl.vagrant.dev;
+  }
+}
