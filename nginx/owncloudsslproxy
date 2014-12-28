@@ -24,10 +24,10 @@ server {
 
 server {
   listen 443;
-  server_name owncloudssl.vagrant.dev;
+  server_name owncloud.vagrant.dev;
   
-  ssl_certificate       /opt/ssl/owncloudssl.vagrant.dev.crt;
-  ssl_certificate_key   /opt/ssl/owncloudssl.vagrant.dev.key;
+  ssl_certificate       /vagrant/ssl/owncloud.vagrant.dev.crt;
+  ssl_certificate_key   /vagrant/ssl/owncloud.vagrant.dev.key;
   
   ssl on; 
   ssl_session_cache  builtin:1000  shared:SSL:10m;
@@ -45,9 +45,9 @@ server {
     proxy_set_header        X-Forwarded-Proto $scheme;
 
     # Fix the “It appears that your reverse proxy set up is broken" error.
-    proxy_pass          http://owncloud.vagrant.dev:80;
+    proxy_pass          http://owncloud.internal.vagrant.dev:80;
     proxy_read_timeout  90;
 
-    proxy_redirect      http://owncloud.vagrant.dev:80 https://owncloudssl.vagrant.dev;
+    proxy_redirect      http://owncloud.internal.vagrant.dev:80 https://owncloud.vagrant.dev;
   }
 }

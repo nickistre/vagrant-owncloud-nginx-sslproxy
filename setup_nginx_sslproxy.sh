@@ -4,14 +4,9 @@
 
 # Setups nginx as an ssl proxy to the owncloud system
 
-mkdir -p /opt/ssl/
-cp /tmp/owncloudssl.vagrant.dev.crt /opt/ssl/
-cp /tmp/owncloudssl.vagrant.dev.key /opt/ssl/
 
-cp /tmp/sslproxy /etc/nginx/sites-available/sslproxy
+rm /etc/nginx/sites-enabled/default
 
-ln -s /etc/nginx/sites-available/sslproxy /etc/nginx/sites-enabled/sslproxy
-
-rm /etc/nginx/sites-available/default
+find /vagrant/nginx/ -type f -exec ln -s {} /etc/nginx/sites-enabled/ \;
 
 sudo service nginx reload

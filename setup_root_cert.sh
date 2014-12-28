@@ -4,5 +4,5 @@
 
 # Sets up the root CA file in the system
 
-cp /tmp/root.crt /usr/local/share/ca-certificates
+cp /vagrant/root-certs/* /usr/local/share/ca-certificates/
 update-ca-certificates

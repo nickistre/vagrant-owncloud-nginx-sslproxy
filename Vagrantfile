@@ -14,7 +14,7 @@ Vagrant.configure(2) do |config|
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "ubuntu/trusty64"
   
-  config.vm.hostname = "owncloudssl.vagrant.dev"
+  config.vm.hostname = "owncloud.vagrant.dev"
   
   config.vm.network "private_network", type: "dhcp"
   
@@ -27,12 +27,6 @@ Vagrant.configure(2) do |config|
   if Vagrant.has_plugin?("landrush")
     config.landrush.enabled = true
   end
-  
-  # Copy files needed for install
-  config.vm.provision "file", source: "sslproxy", destination: "/tmp/sslproxy"
-  config.vm.provision "file", source: "ssl/owncloudssl.vagrant.dev.crt", destination: "/tmp/owncloudssl.vagrant.dev.crt"
-  config.vm.provision "file", source: "ssl/owncloudssl.vagrant.dev.key", destination: "/tmp/owncloudssl.vagrant.dev.key"
-  config.vm.provision "file", source: "ssl/root.crt", destination: "/tmp/root.crt"
   
   
   config.vm.provision "shell", path: "install_nginx.sh"
