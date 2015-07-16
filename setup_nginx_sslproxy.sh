@@ -7,6 +7,6 @@
 
 rm /etc/nginx/sites-enabled/default
 
-find /vagrant/nginx/ -type f -exec ln -s {} /etc/nginx/sites-enabled/ \;
+cp -f /vagrant/nginx/* /etc/nginx/sites-enabled/
 
 sudo service nginx reload
